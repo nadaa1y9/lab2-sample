@@ -17,39 +17,49 @@ public class PlayerController : MonoBehaviour {
     //close he is to the ground
     public LayerMask whatIsGround; //this variable stores what is considered a ground to the character
     private bool grounded; //check if the character is standing on solid ground;
-    // Use this for initialization
-	void Start () {
+    private Animator anim;
+
+    
+    void Start()
+    {
+        anim = GetComponent<Animator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-       
-        if(Input.GetKeyDown(Spacebar) && grounded) //When user presses the space button ONCE
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (Input.GetKeyDown(Spacebar) && grounded) //When user presses the space button ONCE
         {
             Jump(); //see function definition below   
         }
-       
+
         if (Input.GetKey(L)) //When user presses the left arrow button
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed, GetComponent<Rigidbody2D>().velocity.y); 
+            GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
             //player character moves horizontally to the left along the x-axis without disrupting jump
 
-            if(GetComponent<SpriteRenderer>()!=null)
+            if (GetComponent<SpriteRenderer>() != null)
             {
                 GetComponent<SpriteRenderer>().flipX = true;
-            }           
+            }
         }
-      
+
         if (Input.GetKey(R)) //When user presses the left arrow button
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed, GetComponent<Rigidbody2D>().velocity.y); 
+            GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
             //player character moves horizontally to the right along the x-axis without disrupting jump
 
-            if(GetComponent<SpriteRenderer>()!=null)
+            if (GetComponent<SpriteRenderer>() != null)
             {
                 GetComponent<SpriteRenderer>().flipX = false;
-            }   
+            }
         }
+
+        anim.SetFloat("speed", Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x));
+        anim.SetFloat("Height", GetComponent<Rigidbody2D>().velocity.y);
+        anim.SetBool("Grounded", grounded);
+
     }
 
     void FixedUpdate()
